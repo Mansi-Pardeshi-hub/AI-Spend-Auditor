@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { runAudit, AuditInput } from "../src/lib/audit-engine";
-import { supabase } from "../src/lib/supabase"; // Supabase client import kiya
+import { runAudit, AuditInput } from "../lib/audit-engine";
+import { supabase } from "../lib/supabase";
 
 export default function AuditPage() {
   const [formData, setFormData] = useState<AuditInput>({
@@ -25,7 +25,7 @@ export default function AuditPage() {
       const auditResult = runAudit(formData);
       setResult(auditResult);
       setLoading(false);
-    }, 600);
+    }, 800); // Slightly longer for "AI feel"
   };
 
   const handleLeadCapture = async () => {
@@ -62,6 +62,9 @@ export default function AuditPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-10">
+          <div className="inline-block bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-4 border border-blue-100 uppercase tracking-widest">
+            ✨ AI-Powered Optimization
+          </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
             AI <span className="text-blue-600">Spend</span> Auditor
           </h1>
@@ -78,6 +81,7 @@ export default function AuditPage() {
                 <label className="block text-sm font-semibold text-slate-700 mb-2">AI Tool Provider</label>
                 <select 
                   className="w-full bg-slate-50 border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                  value={formData.toolName}
                   onChange={(e) => setFormData({...formData, toolName: e.target.value})}
                 >
                   <option value="Cursor">Cursor AI</option>
@@ -109,18 +113,33 @@ export default function AuditPage() {
             <button 
               onClick={handleAudit}
               disabled={loading}
-              className="mt-8 w-full bg-slate-900 text-white font-bold py-4 px-6 rounded-lg hover:bg-slate-800 transform active:scale-[0.98] transition-all shadow-lg flex items-center justify-center"
+              className="mt-8 w-full bg-slate-900 text-white font-bold py-4 px-6 rounded-lg hover:bg-slate-800 transform active:scale-[0.98] transition-all shadow-lg flex items-center justify-center gap-2"
             >
-              {loading ? "Analyzing..." : "Generate Optimization Report"}
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Analyzing Your Stack...
+                </>
+              ) : "Generate Optimization Report"}
             </button>
+            
+            {/* Privacy Badge below button (User Feedback Requirement) */}
+            <div className="mt-4 flex items-center justify-center space-x-2 text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
+              <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.908-3.367 8.992-8 9.999-4.633-1.007-8-5.091-8-9.999 0-.681.057-1.35.166-2.001zM10 12a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+              </svg>
+              <span>Privacy-First • No Data Sharing • GDPR Compliant</span>
+            </div>
           </div>
 
           {/* Professional Result Section */}
           {result && !loading && (
             <div className="border-t border-slate-100 bg-slate-50 p-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-slate-800">Audit Summary</h2>
-                <span className="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Verified</span>
+                <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                  <span className="text-blue-600">📊</span> Audit Summary
+                </h2>
+                <span className="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Verified Optimization</span>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -134,13 +153,21 @@ export default function AuditPage() {
                 </div>
               </div>
 
-              <div className="mt-4 p-4 bg-white rounded-xl border border-slate-200">
-                <p className="text-sm font-medium text-slate-700 leading-relaxed italic">
-                  &quot;{result.reason}&quot;
+              {/* AI PERSONALIZED SUMMARY BOX - FEATURE #4 */}
+              <div className="mt-6 p-5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl text-white shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-2 opacity-10">
+                   <svg width="60" height="60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.4 9.1L22 9.2L15.9 13.5L18.3 21L12 16.5L5.7 21L8.1 13.5L2 9.2L9.6 9.1L12 2Z"/></svg>
+                </div>
+                <h3 className="text-xs font-bold text-blue-400 mb-2 uppercase tracking-widest flex items-center gap-2">
+                  <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse"></span>
+                  AI Personalized Insight
+                </h3>
+                <p className="text-sm font-medium leading-relaxed italic text-slate-200">
+                  &quot;{result.aiSummary}&quot;
                 </p>
               </div>
 
-              {/* Lead Capture Form Section [cite: 39, 83] */}
+              {/* Lead Capture Form Section */}
               <div className="mt-8 pt-8 border-t border-slate-200">
                 <h3 className="text-sm font-bold text-slate-800 mb-3 uppercase tracking-tight">Save this optimization report</h3>
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -159,17 +186,15 @@ export default function AuditPage() {
                     {isSaving ? "Saving..." : "Email Report"}
                   </button>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-3 text-center italic">
-                  Credex uses this email to notify you when new optimizations apply to your stack. [cite: 72]
-                </p>
               </div>
             </div>
           )}
         </div>
 
         {/* Footer info */}
-        <p className="mt-8 text-center text-slate-500 text-sm italic">
-          Calculated based on real-time market pricing data (May 2026). [cite: 65, 157]
+        <p className="mt-8 text-center text-slate-500 text-xs italic tracking-wide">
+          Calculated based on real-time market pricing data (May 2026). <br/>
+          Designed & Developed by Mansi Pardeshi
         </p>
       </div>
     </main>

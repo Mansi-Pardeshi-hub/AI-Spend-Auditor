@@ -37,3 +37,36 @@
 **Plan for tomorrow:**
 - Conduct 3 user interviews to gather feedback on the Audit UI and results.
 - Research and begin integration for Feature #4: AI-generated personalized audit summaries.
+
+---
+
+## Day 3: 2026-05-08
+**Hours worked:** 3.5
+
+**What I did:**
+- **AI Summary Logic:** Integrated a new `generateAISummary` function into the core engine to provide human-readable insights.
+- **User Validation:** Performed 3 user interviews to validate the "Savings vs Features" tradeoff and documented them in `interviews.md`.
+- **Refinement:** Updated the `AuditResult` interface to include AI-driven recommendations for better UI display.
+
+**What I learned:**
+- Realized that users are hesitant to downgrade even if they save money, unless they are 100% sure no features will be lost.
+- Learned to structure "Roadmap" items based on direct customer pain points (like yearly billing).
+
+**Plan for tomorrow:**
+- Finalize the Results UI to display the new AI insights beautifully.
+- Polish the landing page with "Privacy-First" messaging.
+
+---
+## Day 4: 2026-05-09
+**Hours worked:** 3
+
+**What I did:**
+- **UI Refinement:** Polished the landing page with a modern, clean aesthetic using Tailwind CSS.
+- **AI Feature Integration:** Displayed the AI-generated insights in a premium gradient box for better user engagement.
+- **Trust Building:** Implemented privacy badges and secure messaging based on Day 3 user feedback.
+
+**What I learned:**
+- Learned how small UI elements (like badges and micro-animations) can significantly impact the "perceived value" of a tool.
+
+**Plan for tomorrow:**
+- Final code audit and project submission.
