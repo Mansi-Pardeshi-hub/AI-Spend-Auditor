@@ -1,0 +1,32 @@
+name: CI
+
+# Har push ya pull request par ye workflow chalega 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Next.js ke liye stable version
+
+      - name: Install Dependencies
+        run: npm install
+
+      # PDF Requirement: Run linting 
+      - name: Run Lint
+        run: npm run lint
+
+      # PDF Requirement: Run automated tests 
+      - name: Run Tests
+        run: npm test
