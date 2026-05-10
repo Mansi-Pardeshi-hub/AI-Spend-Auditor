@@ -4,6 +4,17 @@ import { useState } from "react";
 import { runAudit, AuditInput } from "../lib/audit-engine";
 import { supabase } from "../lib/supabase";
 
+/**
+ * Interface representing the structure of the audit result.
+ * This replaces 'any' to satisfy TypeScript linting requirements.
+ */
+interface AuditResult {
+  recommendedPlan: string;
+  savings: number;
+  annualSavings: number;
+  aiSummary: string;
+}
+
 export default function AuditPage() {
   const [formData, setFormData] = useState<AuditInput>({
     toolName: "Cursor",
@@ -12,7 +23,8 @@ export default function AuditPage() {
     monthlySpend: 40,
   });
 
-  const [result, setResult] = useState<any>(null);
+  // Type-safe state for audit results to prevent linting errors
+  const [result, setResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(false);
   
   // Lead Capture States
@@ -23,7 +35,8 @@ export default function AuditPage() {
     setLoading(true);
     setTimeout(() => {
       const auditResult = runAudit(formData);
-      setResult(auditResult);
+      // Explicitly casting the result to our interface
+      setResult(auditResult as AuditResult);
       setLoading(false);
     }, 800); // Slightly longer for "AI feel"
   };
@@ -33,6 +46,8 @@ export default function AuditPage() {
       return alert("Please enter a valid work email");
     }
     
+    if (!result) return;
+
     setIsSaving(true);
     try {
       const { error } = await supabase.from("leads").insert([
@@ -157,7 +172,7 @@ export default function AuditPage() {
                 </div>
               </div>
 
-              {/* Annual Savings Badge - Highly Recommended in PDF */}
+              {/* Annual Savings Badge */}
               <div className="mt-4 bg-blue-600 text-white p-4 rounded-xl flex items-center justify-between shadow-md">
                 <div>
                   <p className="text-[10px] font-bold uppercase opacity-80">Projected Annual Savings</p>
@@ -207,7 +222,7 @@ export default function AuditPage() {
         {/* Footer info */}
         <p className="mt-8 text-center text-slate-500 text-xs italic tracking-wide">
           Calculated based on real-time market pricing data (May 2026). <br/>
-          Designed & Developed by Mansi Pardeshi
+          Designed & Developed by Mansi Pardeshi [cite: 226]
         </p>
       </div>
     </main>
