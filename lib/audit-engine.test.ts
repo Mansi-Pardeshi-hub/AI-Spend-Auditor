@@ -1,26 +1,37 @@
-// src/lib/audit-engine.test.ts
+import { describe, it, expect } from 'vitest';
 import { runAudit } from './audit-engine';
 
-const runTests = () => {
-  console.log(" Starting Automated Audit Tests...");
+describe('Audit Engine Core Logic', () => {
+  
+  // Test 1: Cursor Optimization (Requirement: Defensible logic [cite: 63])
+  it('should recommend Pro plan for small Cursor teams', () => {
+    const result = runAudit({ toolName: "Cursor", plan: "Business", seats: 2, monthlySpend: 80 });
+    expect(result.recommendedPlan).toBe("Pro");
+    expect(result.savings).toBe(40);
+  });
 
-  // Scenario 1: Cursor Business with 2 seats (Should downgrade)
-  const t1 = runAudit({ toolName: "Cursor", plan: "Business", seats: 2, monthlySpend: 80 });
-  if (t1.recommendedPlan === "Pro" && t1.savings === 40) {
-    console.log(" Test 1: Cursor Optimization - Passed");
-  } else {
-    console.error(" Test 1 Failed");
-  }
+  // Test 2: ChatGPT Enterprise Downgrade
+  it('should suggest Team plan for small ChatGPT Enterprise teams', () => {
+    const result = runAudit({ toolName: "ChatGPT", plan: "Enterprise", seats: 10, monthlySpend: 600 });
+    expect(result.recommendedPlan).toBe("Team");
+    expect(result.savings).toBeGreaterThan(0);
+  });
 
-  // Scenario 2: ChatGPT Enterprise with 10 seats (Should downgrade to Team)
-  const t2 = runAudit({ toolName: "ChatGPT", plan: "Enterprise", seats: 10, monthlySpend: 600 });
-  if (t2.recommendedPlan === "Team") {
-    console.log(" Test 2: ChatGPT Optimization - Passed");
-  } else {
-    console.error(" Test 2 Failed");
-  }
+  // Test 3: Annual Math (Requirement: Show total annual savings [cite: 38])
+  it('should correctly calculate annual savings', () => {
+    const result = runAudit({ toolName: "Claude", plan: "Enterprise", seats: 4, monthlySpend: 200 });
+    expect(result.annualSavings).toBe(result.savings * 12);
+  });
 
-  console.log("\n All test scenarios verified!");
-};
+  // Test 4: Honesty Check (Requirement: Don't manufacture savings [cite: 71])
+  it('should show zero savings for already optimal plans', () => {
+    const result = runAudit({ toolName: "Gemini", plan: "Pro", seats: 1, monthlySpend: 20 });
+    expect(result.savings).toBe(0);
+  });
 
-runTests();
+  // Test 5: Edge Case
+  it('should handle zero seats gracefully', () => {
+    const result = runAudit({ toolName: "Cursor", plan: "Business", seats: 0, monthlySpend: 0 });
+    expect(result.savings).toBe(0);
+  });
+});

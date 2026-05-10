@@ -85,7 +85,11 @@ export default function AuditPage() {
                   onChange={(e) => setFormData({...formData, toolName: e.target.value})}
                 >
                   <option value="Cursor">Cursor AI</option>
+                  <option value="GitHub Copilot">GitHub Copilot</option>
                   <option value="ChatGPT">OpenAI (ChatGPT)</option>
+                  <option value="Claude">Anthropic (Claude)</option>
+                  <option value="Gemini">Google Gemini</option>
+                  <option value="OpenAI API">OpenAI API Direct</option>
                 </select>
               </div>
 
@@ -123,7 +127,7 @@ export default function AuditPage() {
               ) : "Generate Optimization Report"}
             </button>
             
-            {/* Privacy Badge below button (User Feedback Requirement) */}
+            {/* Privacy Badge */}
             <div className="mt-4 flex items-center justify-center space-x-2 text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
               <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.908-3.367 8.992-8 9.999-4.633-1.007-8-5.091-8-9.999 0-.681.057-1.35.166-2.001zM10 12a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
@@ -148,12 +152,21 @@ export default function AuditPage() {
                   <p className="text-xl font-bold text-blue-600">{result.recommendedPlan}</p>
                 </div>
                 <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Estimated Savings</p>
-                  <p className="text-xl font-bold text-green-600">${result.savings}/month</p>
+                  <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Estimated Monthly Savings</p>
+                  <p className="text-xl font-bold text-green-600">${result.savings}/mo</p>
                 </div>
               </div>
 
-              {/* AI PERSONALIZED SUMMARY BOX - FEATURE #4 */}
+              {/* Annual Savings Badge - Highly Recommended in PDF */}
+              <div className="mt-4 bg-blue-600 text-white p-4 rounded-xl flex items-center justify-between shadow-md">
+                <div>
+                  <p className="text-[10px] font-bold uppercase opacity-80">Projected Annual Savings</p>
+                  <p className="text-2xl font-black">${result.annualSavings}/year</p>
+                </div>
+                <div className="text-3xl opacity-20">💰</div>
+              </div>
+
+              {/* AI Insight Box */}
               <div className="mt-6 p-5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl text-white shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-2 opacity-10">
                    <svg width="60" height="60" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L14.4 9.1L22 9.2L15.9 13.5L18.3 21L12 16.5L5.7 21L8.1 13.5L2 9.2L9.6 9.1L12 2Z"/></svg>
@@ -167,7 +180,7 @@ export default function AuditPage() {
                 </p>
               </div>
 
-              {/* Lead Capture Form Section */}
+              {/* Lead Capture */}
               <div className="mt-8 pt-8 border-t border-slate-200">
                 <h3 className="text-sm font-bold text-slate-800 mb-3 uppercase tracking-tight">Save this optimization report</h3>
                 <div className="flex flex-col sm:flex-row gap-3">

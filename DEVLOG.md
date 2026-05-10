@@ -70,3 +70,20 @@
 
 **Plan for tomorrow:**
 - Final code audit and project submission.
+
+## Day 5 2026-05-10
+**Hours worked:** 3
+**What I did:** - Finalized the Audit Engine logic for all mandatory tools (Copilot, Claude, Gemini).
+- Wrote unit tests to verify savings calculations.
+- Updated PRICING_DATA.md with official source URLs.
+**What I learned:** Deepened understanding of unit testing for financial logic and how to handle edge cases in TypeScript.
+**Plan for tomorrow:** Set up GitHub Actions for CI and write the Reflection report.
+
+## Day 6 2026-05-11
+**Hours worked:** 3
+**What I did:**
+- Finalized the `REFLECTION.md` with deep-dives into architectural decisions.
+- Updated the test suite to use professional assertion libraries (Vitest/Jest).
+- Verified the audit engine against all 5 test scenarios.
+**What I learned:** Learned how to document technical trade-offs and the importance of defensible financial logic in B2B tools.
+**Plan for tomorrow:** Final deployment on Vercel and submission.
