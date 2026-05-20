@@ -1,15 +1,10 @@
-# Round 2 Technical Reflection
+# Round 2 Development Log
 
-### 1. Architectural Trade-offs
-For the change detection mechanism, I implemented a manual `/api/detect-changes` endpoint instead of configuring an automated Vercel Cron Job or a GitHub Action workflow. 
-- **Pros:** It avoids setting up complex infrastructure or managing third-party authentication tokens under tight 36-hour constraints. It can be triggered cleanly on-demand via an API tester or manual webhook.
-- **Cons:** It requires external stimulation (an explicit admin hit) to scan for changes rather than checking automatically at midnight.
-
-### 2. Scalability Bottlenecks
-If the user base grows to 50,000+ concurrently saved audits:
-- **Database Strain:** Querying `SELECT *` from the `audits` table will cause significant memory crashes. We would need to implement cursor-based pagination and create database indexes on `user_email` and `created_at`.
-- **API Timeout:** A single loop processing 50k entries would hit the 10-second Vercel serverless function timeout. We would need to move this process to an edge worker or a background queue processing model.
-
-### 3. Edge Cases Addressed
-- **Anti-Spam Multi-Audit Consolidation:** Built an email consolidation mapping array logic so if a single user owns 10 separate configurations that change, they receive 1 single itemized breakdown alert instead of 10 separate spam emails.
-- **Vercel Cache Isolation:** Documented explicit instruction checklist guidelines to prevent deployment caches from locking out newly declared Environment Variables.
+## May 20, 2026
+- **06:25 PM**: Created local Git branch `round-2-reaudit` to safely isolate implementation.
+- **06:30 PM**: Checked Supabase project status, resumed the paused database instance, and executed the SQL script to successfully build the `audits` table.
+- **06:45 PM**: Initialized the log trace database core file at `app/api/save-audit/route.ts` to persist user recommendations.
+- **07:15 PM**: Created the dynamic interactive side-by-side comparison interface layout structure at `app/diff/[id]/page.tsx` displaying cost variances and budget delta changes.
+- **07:25 PM**: Installed `resend` library and configured the core detection engine at `app/api/detect-changes/route.ts` with anti-spam multi-audit consolidation mapping rules.
+- **07:40 PM**: Completed `ROUND2_REFLECTION.md` analyzing architectural trade-offs, scalability bottlenecks, and edge cases.
+- **07:41 PM**: Drafted `ROUND2_PR.md` detailing change logs and environment isolation strategies, completing the feature implementation.
